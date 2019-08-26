@@ -43,7 +43,7 @@ for var in features:
     plt.figure(count//figures_per_time, figsize=(25, 5))
     plt.subplot(1, figures_per_time, np.mod(count, 4)+1)
     plt.scatter(x, y)
-    plt.title('f model T= {}'.format(var)
+    plt.title('f model T= {}'.format(var))
     plt.show()
     count += 1
 
