@@ -23,16 +23,14 @@ sns.distplot(y)
 # plt.show()
 
 # concatenate train and test
-data_features = pd.concat((train, test)).reset_index(drop=True)
+data_features = pd.concat((X, test)).reset_index(drop=True)
 print(data_features.shape)
 
 # extract categorical features and numerical features
 categorical_features = data_features.select_dtypes(include=['object']).columns
-print('categorical_features:')
-print(categorical_features)
+print('categorical_features:', '\n', categorical_features)
 numerical_features = data_features.select_dtypes(exclude=['object']).columns
-print('numerical_features:')
-print(numerical_features)
+print('numerical_features:', '\n', numerical_features)
 
 # plot the numerical features
 features = numerical_features
@@ -44,8 +42,9 @@ for var in features:
     plt.subplot(1, figures_per_time, np.mod(count, 4)+1)
     plt.scatter(x, y)
     plt.title('f model T= {}'.format(var))
-    plt.show()
     count += 1
+
+# plt.show()
 
 
 # split train set and valid set
@@ -54,6 +53,6 @@ for var in features:
 # print(X_valid.describe())
 
 # count missing values in train data and test data
-NAs = pd.concat([X.isnull().sum(), test.isnull().sum()], axis=1, keys=['train', 'test'])
-print(NAs[NAs.sum(axis=1) > 0])
-print(NAs[NAs.sum(axis=1) > 0].index)
+# NAs = pd.concat([X.isnull().sum(), test.isnull().sum()], axis=1, keys=['train', 'test'])
+# print(NAs[NAs.sum(axis=1) > 0])
+# print(NAs[NAs.sum(axis=1) > 0].index)
