@@ -63,7 +63,7 @@ cate_features_with_missing = [index for index in NAs.index
                               if index in categorical_features]
 # print(cate_features_with_missing)
 
-# deal with missing values
+# fill NAs in numerical features
 for col in num_features_with_missing:
     data_features[col] = data_features[col].fillna(0)
     X[col] = X[col].fillna(X[col].mean())
