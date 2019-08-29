@@ -56,29 +56,53 @@ def _count_missing_values(train, test):
 
 NAs = _count_missing_values(data_features.loc['train'], data_features.loc['test'])
 print(NAs)
-# num_features_with_missing = [index for index in NAs.index
-#                              if index in numerical_features]
-# print('numerical_features_with_missing:', '\n', num_features_with_missing)
-# cate_features_with_missing = [index for index in NAs.index
-#                               if index in categorical_features]
-# print('categorical_features_with_missing:', '\n', cate_features_with_missing)
 
 # fill NAs in features
 # MSZoning. NAs in test. fill with mode
-data_features['MSZoning'] = data_features['MSZoning'].fillna(data_features['MSZoning'].mode())
+data_features['MSZoning'] = data_features['MSZoning'].fillna(data_features['MSZoning'].mode().iloc[0])
 
-# LotFrontage. Numerical feature. I suppose NAs mean 0
+# LotFrontage. NAs in all. Numerical feature. I suppose NAs mean 0
 data_features['LotFrontage'] = data_features['LotFrontage'].fillna(0)
 
-# Alley. NA means no alley access
+# Alley. NAs in all. NA means no alley access
 data_features['Alley'] = data_features['Alley'].fillna('NOACCESS')
 
 # Exterior1st, Exterior2nd. NA in test. fill with mode
 for col in ['Exterior1st', 'Exterior2nd']:
-    data_features[col] = data_features[col].fillna(data_features[col].mode())
+    data_features[col] = data_features[col].fillna(data_features[col].mode().iloc[0])
 
+# MasVnrType. NAs in all. Fill with mode.
+data_features['MasVnrType'] = data_features['MasVnrType'].fillna(data_features['MasVnrType'].mode().iloc[0])
 
-# print(data_features[num_features_with_missing].isnull().sum())
+# BsmtQual, BsmtCond, BsmtExposure, BsmtFinType1, BsmtFinType2. NAs in all. NA means no basement.
+for col in ['BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2']:
+    data_features[col] = data_features[col].fillna('NOBSMT')
+
+# TotalBsmtSF. NAs in test. I suppose NA means 0.
+data_features['TotalBsmtSF'] = data_features['TotalBsmtSF'].fillna(0)
+
+# Electrical. NAs in train. Fill with mode.
+data_features['Electrical'] = data_features['Electrical'].fillna(data_features['Electrical'].mode().iloc[0])
+
+# KitchenQual. NA in test. Fill with mode.
+data_features['KitchenQual'] = data_features['KitchenQual'].fillna(data_features['KitchenQual'].mode().iloc[0])
+
+# FireplaceQu. NAs in all. NA means no fireplace.
+data_features['FireplaceQu'] = data_features['FireplaceQu'].fillna('NOFP')
+
+# GarageType, GarageFinish, GarageQual. NAs in all. NA means no garage.
+for col in ['GarageType', 'GarageFinish', 'GarageQual']:
+    data_features[col] = data_features[col].fillna('NOGRG')
+
+# GarageCars. NA in test. I suppose NA means 0.
+data_features['GarageCars'] = data_features['GarageCars'].fillna(0)
+
+# SaleType. NA in test. Fill with mode.
+data_features['SaleType'] = data_features['SaleType'].fillna(data_features['SaleType'].mode().iloc[0])
+
+# Add total square feet, drop basement, 1st, 2nd floor features
+data_features['TotalSF'] = data_features['TotalBsmtSF'] + data_features['1stFlrSF'] + data_features['2ndFlrSF']
+data_features.drop(['TotalBsmtSF', '1stFlrSF', '2ndFlrSF'], axis=1, inplace=True)
 
 _plot_features(numerical_features, data_features.loc['train'], y)
 
