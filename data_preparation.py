@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OneHotEncoder
 
 # read train and test files
 train_path = './house-prices-advanced-regression-techniques/train.csv'
@@ -101,11 +102,16 @@ data_features['GarageCars'] = data_features['GarageCars'].fillna(0)
 data_features['SaleType'] = data_features['SaleType'].fillna(data_features['SaleType'].mode().iloc[0])
 
 # Add total square feet, drop basement, 1st, 2nd floor features
-data_features['TotalSF'] = data_features['TotalBsmtSF'] + data_features['1stFlrSF'] + data_features['2ndFlrSF']
-data_features.drop(['TotalBsmtSF', '1stFlrSF', '2ndFlrSF'], axis=1, inplace=True)
+# data_features['TotalSF'] = data_features['TotalBsmtSF'] + data_features['1stFlrSF'] + data_features['2ndFlrSF']
+# data_features.drop(['TotalBsmtSF', '1stFlrSF', '2ndFlrSF'], axis=1, inplace=True)
 
 _plot_features(numerical_features, data_features.loc['train'], y)
 
+# pipeline standardized. Numerical features.
+# one-hot encoding. categorical features.
+OH_encoder = OneHotEncoder(handle_unknown='ignore', sparse=False)
+data_features[categorical_features] = pd.DataFrame(OH_encoder.fit_transform(data_features[categorical_features]))
+print(data_features[categorical_features].head())
 
 # split train set and valid set
 # X_train, X_valid, y_train, y_valid = train_test_split(X, y, test_size=0.2, random_state=0)
