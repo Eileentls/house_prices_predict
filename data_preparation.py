@@ -31,14 +31,14 @@ data_features.drop(['Utilities', 'RoofMatl', 'MasVnrArea', 'BsmtFinSF1', 'BsmtFi
 
 # extract categorical features and numerical features
 categorical_features = data_features.select_dtypes(include=['object']).columns
-# print('categorical_features:', '\n', categorical_features)
+print('categorical_features:', '\n', categorical_features)
 # print('categorical_features data:', '\n', data_features[categorical_features].head())
 numerical_features = data_features.select_dtypes(exclude=['object']).columns
-# print('numerical_features:', '\n', numerical_features)
+print('numerical_features:', '\n', numerical_features)
 # print('numerical_features data:', '\n', data_features[numerical_features].head())
 
 # plot the numerical features
-def _plot_features(features, data_features, data_label):
+def __plot_features__(features, data_features, data_label):
     figures_per_time = 4
     count = 0
     for var in features:
@@ -51,11 +51,11 @@ def _plot_features(features, data_features, data_label):
 
 
 # count missing values in train and test
-def _count_missing_values(train, test):
+def __count_missing_values__(train, test):
     NAs = pd.concat([train.isnull().sum(), test.isnull().sum()], axis=1, keys=['train', 'test'])
     return NAs[NAs.sum(axis=1) > 0]
 
-NAs = _count_missing_values(data_features.loc['train'], data_features.loc['test'])
+NAs = __count_missing_values__(data_features.loc['train'], data_features.loc['test'])
 print(NAs)
 
 # fill NAs in features
@@ -105,15 +105,16 @@ data_features['SaleType'] = data_features['SaleType'].fillna(data_features['Sale
 # data_features['TotalSF'] = data_features['TotalBsmtSF'] + data_features['1stFlrSF'] + data_features['2ndFlrSF']
 # data_features.drop(['TotalBsmtSF', '1stFlrSF', '2ndFlrSF'], axis=1, inplace=True)
 
-_plot_features(numerical_features, data_features.loc['train'], y)
+__plot_features__(numerical_features, data_features.loc['train'], y)
 
 # pipeline standardized. Numerical features.
 # one-hot encoding. categorical features.
 OH_encoder = OneHotEncoder(handle_unknown='ignore', sparse=False)
-data_features[categorical_features] = pd.DataFrame(OH_encoder.fit_transform(data_features[categorical_features]))
-print(data_features[categorical_features].head())
+# print(data_features[categorical_features].head())
+OH_data_features = pd.DataFrame(OH_encoder.fit_transform(data_features['SaleType']))
+data_features_tmp = data_features.drop(categorical_features, axis=1)
+data_features = pd.concat([OH_data_features, data_features_tmp], axis=1)
+print(data_features.loc['train'].columns)
 
-# split train set and valid set
-# X_train, X_valid, y_train, y_valid = train_test_split(X, y, test_size=0.2, random_state=0)
-# print(X_train.describe())
-# print(X_valid.describe())
+def generate(train, test, label):
+    return
