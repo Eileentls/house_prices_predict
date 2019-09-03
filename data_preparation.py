@@ -83,7 +83,7 @@ for col in ['BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType
 data_features['TotalBsmtSF'] = data_features['TotalBsmtSF'].fillna(0)
 
 # Electrical. NAs in train. Fill with mode.
-data_features['Electrical'] = data_features['Electrical'].fillna(data_features['Electrical'].mode().iloc[0])
+data_features['Electrical'] = data_features['Electsrical'].fillna(data_features['Electrical'].mode().iloc[0])
 
 # KitchenQual. NA in test. Fill with mode.
 data_features['KitchenQual'] = data_features['KitchenQual'].fillna(data_features['KitchenQual'].mode().iloc[0])
@@ -111,10 +111,11 @@ __plot_features__(numerical_features, data_features.loc['train'], y)
 # one-hot encoding. categorical features.
 OH_encoder = OneHotEncoder(handle_unknown='ignore', sparse=False)
 # print(data_features[categorical_features].head())
-OH_data_features = pd.DataFrame(OH_encoder.fit_transform(data_features['SaleType']))
-data_features_tmp = data_features.drop(categorical_features, axis=1)
-data_features = pd.concat([OH_data_features, data_features_tmp], axis=1)
-print(data_features.loc['train'].columns)
+OH_data_features = pd.DataFrame(OH_encoder.fit_transform(data_features[categorical_features]))
+# data_features_tmp = data_features.drop(categorical_features, axis=1)
+# data_features = pd.concat([OH_data_features, data_features_tmp], axis=1)
+# print(data_features.loc['train'].columns)
+print(OH_data_features.columns)
 
 def generate(train, test, label):
     return
