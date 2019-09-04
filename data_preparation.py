@@ -4,6 +4,7 @@ import seaborn as sns
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import LabelEncoder
 
 # read train and test files
 train_path = './house-prices-advanced-regression-techniques/train.csv'
@@ -83,7 +84,7 @@ for col in ['BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType
 data_features['TotalBsmtSF'] = data_features['TotalBsmtSF'].fillna(0)
 
 # Electrical. NAs in train. Fill with mode.
-data_features['Electrical'] = data_features['Electsrical'].fillna(data_features['Electrical'].mode().iloc[0])
+data_features['Electrical'] = data_features['Electrical'].fillna(data_features['Electrical'].mode().iloc[0])
 
 # KitchenQual. NA in test. Fill with mode.
 data_features['KitchenQual'] = data_features['KitchenQual'].fillna(data_features['KitchenQual'].mode().iloc[0])
@@ -117,5 +118,10 @@ OH_data_features = pd.DataFrame(OH_encoder.fit_transform(data_features[categoric
 # print(data_features.loc['train'].columns)
 print(OH_data_features.columns)
 
+label_features = ['LotShape', 'LandSlope', 'ExterQual', 'ExterCond', 'BsmtQual', 'BsmtCond', '' ]
+label_encoder = LabelEncoder()
+print(label_encoder.fit_transform(data_features['LotShape']))
+
 def generate(train, test, label):
     return
+
