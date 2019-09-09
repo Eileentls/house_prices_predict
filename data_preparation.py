@@ -129,7 +129,7 @@ def generate(train, test):
     (train_standardized, test_standardized) = __num_features_standardized(train_with_missing, test_with_missing, numerical_features_standardized)
 
     categorical_features = test.select_dtypes(include=['object']).columns
-    # label_features = ['MSZoning', 'Street', 'Alley', 'LotShape', 'LandContour', 'Utilities',
+    # categorical_features = ['MSZoning', 'Street', 'Alley', 'LotShape', 'LandContour', 'Utilities',
     #    'LotConfig', 'LandSlope', 'Neighborhood', 'Condition1', 'Condition2',
     #    'BldgType', 'HouseStyle', 'RoofStyle', 'RoofMatl', 'Exterior1st',
     #    'Exterior2nd', 'MasVnrType', 'ExterQual', 'ExterCond', 'Foundation',
@@ -142,10 +142,9 @@ def generate(train, test):
     label_features = ['LotShape', 'LandSlope', 'ExterQual', 'ExterCond', 'BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2', 'HeatingQC', 'KitchenQual', 'FireplaceQu', 'GarageFinish', 'GarageQual',
                       'SaleCondition']
     (train_transform, test_transform) = __cate_features_transform__(train_with_missing, test_with_missing, categorical_features, label_features)
-
-    train_with_missing.drop(categorical_features, axis=1).drop(numerical_features_standardized, axis=1)
-    test_with_missing.drop(categorical_features, axis=1).drop(numerical_features_standardized, axis=1)
-    new_train = pd.concat([test_with_missing, train_standardized, train_transform], axis=1)
-    new_test = pd.concat([test_with_missing, test_standardized, test_transform], axis=1)
+    train_drop = train_with_missing.drop(categorical_features, axis=1).drop(numerical_features_standardized, axis=1)
+    test_drop = test_with_missing.drop(categorical_features, axis=1).drop(numerical_features_standardized, axis=1)
+    new_train = pd.concat([train_drop, train_standardized, train_transform], axis=1)
+    new_test = pd.concat([test_drop, test_standardized, test_transform], axis=1)
     return (new_train, new_test)
 
