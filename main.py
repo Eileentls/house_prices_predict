@@ -53,7 +53,3 @@ pd.DataFrame({'Id' : test.Id, 'SalePrice' : final_labels}).to_csv('prediction.cs
 
 
 
-# print(X_train.head())
-# X_train.to_csv('x_train.csv')
-# print(X_train.describe())
-# print(X_valid.describe())

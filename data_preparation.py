@@ -2,10 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.preprocessing import LabelEncoder
-from sklearn.preprocessing import StandardScaler
-
+from sklearn.preprocessing import OneHotEncoder, LabelEncoder, StandardScaler
 
 # observing sale price histogram
 # sns.distplot(y)
